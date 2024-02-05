@@ -20,7 +20,7 @@
 
     <h2>Product' List</h2>
 
-    <a th:href="@{/product/create}" class="btn btn-primary btn-sm mb-3">Create Product</a>
+    <a th:href="@{/product/create}" class="btn btn-info btn-sm mb-3">Create Product</a>
 
 
 
@@ -45,6 +45,9 @@
             <td th:text="${product.productName}"></td>
 
             <td th:text="${product.productQuantity}"></td>
+            <td>
+                <a th:href="@{'/product/edit/' + ${product.productId}}" class="btn btn-info btn-sm">Edit</a>
+            </td>
 
         </tr>
 
