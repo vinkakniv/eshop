@@ -31,13 +31,14 @@ public class ProductRepository {
         return null;
     }
 
-    public void update(Product newProduct) {
+    public Product update(Product newProduct) {
         for (int i = 0; i < productData.size(); i++) {
             Product product = productData.get(i);
             if (product.getProductId().equals(newProduct.getProductId())) {
                 productData.set(i, newProduct);
-                break;
+                return newProduct;
             }
         }
+        return null;
     }
 }
