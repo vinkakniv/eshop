@@ -39,7 +39,7 @@ class ProductControllerTest {
         String view = productController.createProductPage(model);
 
         verify(model, times(1)).addAttribute(eq("product"), any(Product.class));
-        assert("createProduct".equals(view));
+        assert "createProduct".equals(view);
     }
 
     @Test
@@ -50,7 +50,7 @@ class ProductControllerTest {
         String view = productController.createProductPost(product, model);
 
         verify(productService, times(1)).create(product);
-        assert("redirect:list".equals(view));
+        assert "redirect:list".equals(view);
     }
 
     @Test
@@ -61,7 +61,7 @@ class ProductControllerTest {
         String view = productController.productListPage(model);
 
         verify(model, times(1)).addAttribute("products", allProducts);
-        assert("productList".equals(view));
+        assert "productList".equals(view);
     }
 
     @Test
@@ -72,7 +72,7 @@ class ProductControllerTest {
         String view = productController.editProductPage("1", model);
 
         verify(model, times(1)).addAttribute("product", product);
-        assert("editProduct".equals(view));
+        assert "editProduct".equals(view);
     }
 
     @Test
@@ -83,7 +83,7 @@ class ProductControllerTest {
         String view = productController.editProductPost(product);
 
         verify(productService, times(1)).update(product);
-        assert("redirect:/product/list".equals(view));
+        assert "redirect:/product/list".equals(view);
     }
 
     @Test
@@ -95,7 +95,7 @@ class ProductControllerTest {
         String view = productController.deleteProductPost("1");
 
         verify(productService, times(1)).delete(product);
-        assert("redirect:/product/list".equals(view));
+        assert "redirect:/product/list".equals(view);
     }
 
     @Test
@@ -105,6 +105,6 @@ class ProductControllerTest {
         String view = productController.editProductPage("1", model);
 
         verify(productService, times(1)).findById("1");
-        assert("redirect:/product/list".equals(view));
+        assert "redirect:/product/list".equals(view);
     }
 }
