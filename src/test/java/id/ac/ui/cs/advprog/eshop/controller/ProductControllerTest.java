@@ -99,7 +99,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void testEditProductPage_ProductDoesNotExist() {
+    void testEditProductPageProductDoesNotExist() {
         when(productService.findById(anyString())).thenThrow(NoSuchElementException.class);
 
         String view = productController.editProductPage("1", model);
