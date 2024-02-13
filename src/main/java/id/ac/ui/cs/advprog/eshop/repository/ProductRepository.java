@@ -23,6 +23,9 @@ public class ProductRepository {
     }
 
     public Product findById(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         for (Product product : productData) {
             if (product.getProductId().equals(id)) {
                 return product;
@@ -30,6 +33,7 @@ public class ProductRepository {
         }
         return null;
     }
+
 
     public Product update(Product newProduct) {
         for (int i = 0; i < productData.size(); i++) {
