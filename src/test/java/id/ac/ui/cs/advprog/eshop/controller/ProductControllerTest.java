@@ -93,13 +93,14 @@ class ProductControllerTest {
     }
 
     @Test
-    void testEditProductPage_NotFound() throws Exception {
+    void testEditProductPageNotFound() throws Exception {
         when(productService.findById(anyString())).thenThrow(NoSuchElementException.class);
 
         mockMvc.perform(get("/product/edit/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/product/list"));
     }
+
     @Test
     void testDeleteProductPost() throws Exception {
         Product product = new Product();
