@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public class ProductRepository {
+public class ProductRepository implements ProductRepositoryInterface {
     private List<Product> productData = new ArrayList<>();
 
     public Product create(Product product) {
@@ -33,8 +33,6 @@ public class ProductRepository {
         }
         return null;
     }
-
-
     public Product update(Product newProduct) {
         for (int i = 0; i < productData.size(); i++) {
             Product product = productData.get(i);
