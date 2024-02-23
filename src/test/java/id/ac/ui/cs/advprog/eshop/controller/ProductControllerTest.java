@@ -7,13 +7,20 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.ui.Model;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class ProductControllerTest {
 
@@ -23,88 +30,83 @@ class ProductControllerTest {
     @Mock
     private ProductService productService;
 
-    @Mock
-    private Model model;
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
     }
 
     @Test
-    void testCreateProductPage() {
+    void testCreateProductPage() throws Exception {
+        mockMvc.perform(get("/product/create"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("createProduct"))
+                .andExpect(model().attributeExists("product"));
+    }
+
+    @Test
+    void testCreateProductPost() throws Exception {
         Product product = new Product();
         when(productService.create(any(Product.class))).thenReturn(product);
 
-        String view = productController.createProductPage(model);
-
-        verify(model, times(1)).addAttribute(eq("product"), any(Product.class));
-        assert "createProduct".equals(view);
+        mockMvc.perform(post("/product/create")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("product", product))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("list"));
     }
 
     @Test
-    void testCreateProductPost() {
-        Product product = new Product();
-        when(productService.create(any(Product.class))).thenReturn(product);
-
-        String view = productController.createProductPost(product, model);
-
-        verify(productService, times(1)).create(product);
-        assert "redirect:list".equals(view);
-    }
-
-    @Test
-    void testProductListPage() {
+    void testProductListPage() throws Exception {
         List<Product> allProducts = Arrays.asList(new Product(), new Product());
         when(productService.findAll()).thenReturn(allProducts);
 
-        String view = productController.productListPage(model);
-
-        verify(model, times(1)).addAttribute("products", allProducts);
-        assert "productList".equals(view);
+        mockMvc.perform(get("/product/list"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("productList"))
+                .andExpect(model().attribute("products", allProducts));
     }
 
     @Test
-    void testEditProductPage() {
+    void testEditProductPage() throws Exception {
         Product product = new Product();
         when(productService.findById(anyString())).thenReturn(product);
 
-        String view = productController.editProductPage("1", model);
-
-        verify(model, times(1)).addAttribute("product", product);
-        assert "editProduct".equals(view);
+        mockMvc.perform(get("/product/edit/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("editProduct"))
+                .andExpect(model().attribute("product", product));
     }
 
     @Test
-    void testEditProductPost() {
+    void testEditProductPost() throws Exception {
         Product product = new Product();
         when(productService.update(any(Product.class))).thenReturn(product);
 
-        String view = productController.editProductPost(product);
-
-        verify(productService, times(1)).update(product);
-        assert "redirect:/product/list".equals(view);
+        mockMvc.perform(post("/product/edit")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("product", product))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/product/list"));
     }
 
     @Test
-    void testDeleteProductPost() {
-        Product product = new Product();
-        when(productService.findById(anyString())).thenReturn(product);
-        doNothing().when(productService).delete(product);
-
-        String view = productController.deleteProductPost("1");
-
-        verify(productService, times(1)).delete(product);
-        assert "redirect:/product/list".equals(view);
-    }
-
-    @Test
-    void testEditProductPageProductDoesNotExist() {
+    void testEditProductPage_NotFound() throws Exception {
         when(productService.findById(anyString())).thenThrow(NoSuchElementException.class);
 
-        String view = productController.editProductPage("1", model);
+        mockMvc.perform(get("/product/edit/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/product/list"));
+    }
+    @Test
+    void testDeleteProductPost() throws Exception {
+        Product product = new Product();
+        when(productService.findById(anyString())).thenReturn(product);
 
-        verify(productService, times(1)).findById("1");
-        assert "redirect:/product/list".equals(view);
+        mockMvc.perform(post("/product/delete/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/product/list"));
     }
 }
