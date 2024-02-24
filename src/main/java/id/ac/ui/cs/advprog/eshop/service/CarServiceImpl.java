@@ -1,12 +1,14 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
 import id.ac.ui.cs.advprog.eshop.model.Car;
-import id.ac.ui.cs.advprog.eshop.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import id.ac.ui.cs.advprog.eshop.repository.CarRepository;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -17,6 +19,10 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car create(Car car) {
         // TODO Auto-generated method stub
+        if(car.getCarId() == null) {
+            UUID uuid = UUID.randomUUID();
+            car.setCarId(uuid.toString());
+        }
         carRepository.create(car);
         return car;
     }
@@ -42,7 +48,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void deleteCarById(String carId) {
+    public void delete(String carId) {
         // TODO Auto-generated method stub
         carRepository.delete(carId);
     }

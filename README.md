@@ -7,6 +7,7 @@
 This repository contains the code and reflections for Tutorial in Advanced Programming course by Vinka Alrezky As (NPM: 2206820200)❄️
 - [Tutorial 1](#tutorial-1)
 - [Tutorial 2](#tutorial-2)
+- [Tutorial 3](#tutorial-3)
 
 Click here to see the deployed [ADV Shop](https://eshop-adpro-tutorial.koyeb.app/) app!
 
@@ -79,3 +80,39 @@ Even though my code works, there are things that could be done to make it better
 
 2. Indeed, my current use of GitHub Actions for CI/CD workflows effectively meets the definitions of Continuous Integration and Continuous Deployment. With Continuous Integration, every time i make a commit, it triggers a workflow. This workflow automatically builds and tests the code, making sure that any new changes i make work well with the existing code, reducing the chance of problems when combining the changes.
 For Continuous Deployment, as soon as all tests pass, the codebase is automatically sent to the production environment. This means that any new features, updates, or fixes i create are quickly and efficiently delivered to the end-users. This not only speeds up the delivery of new features to users but also cuts down on the time and effort usually needed for manual deployment processes.
+
+# Tutorial 3
+
+1. Here are the SOLID principles that I have applied to this project:
+
+- **_Single Responsibility Principle (SRP)_**: Previously, the `CarController` class violated the SRP by extending `ProductController`, resulting in a dual responsibility. This meant that `CarController` had the task of handling mapping related to both `Car` and `Product` objects due to the inheritance from `ProductController`. 
+To fix this, I have separated these two controllers. The `ProductController` class is now solely responsible for managing the mapping for `Product`, and the `CarController` class is solely responsible for managing the mapping for `Car`.
+Additionally, the `ProductRepository` and `CarRepository` classes were previously responsible for both data access operations and generating UUIDs for `Product` and `Car` entities. This also violated the SRP. To fix this, I moved the UUID generation to the `ProductService` and `CarService` classes, ensuring that each class now has a single responsibility and doesn't mix different tasks.
+- **_Open-Closed Principle (OCP)_**: The code has been written in a way that it is open for extension but closed for modification. This means that new functionality can be added by creating new classes, without needing to modify existing classes. For example, adding a new mapping for a new entity can be done by creating a new controller for the new entity, without needing to modify the existing controllers.
+
+  In addition, although I'm not entirely sure if this counts, I made a change in the `update` method in `CarRepository`. I replaced:
+  ```
+  car.setCarName(updatedCar.getCarName());
+  car.setCarColor(updatedCar.getCarColor());
+  car.setCarQuantity(updatedCar.getCarQuantity()); 
+  ```
+  with:
+  ```
+  car.setCarName(updatedCar.getCarName());
+  ```
+  This change means that if a new attribute is added to the `Car` object, there's no need to add it to the `update` method.
+- **_Liskov Substitution Principle (LSP)_**: This principle is all about ensuring that a child class can substitute its parent class without causing any unexpected behavior. In this project, as there are no inheritance relationships in the code, the principle has been fulfilled by default.
+- **_Interface Segregation Principle (ISP)_**: This principle ensures that implementing classes are only burdened with methods pertinent to their functionality. In this project, the principle is maintained by creating small, specific interfaces so that a class uses only the methods that are required for it. For example, `CarService` is implemented by `CarServiceImpl` and `ProductService` is implemented by `ProductServiceImpl`. Each of these interfaces contains only the methods relevant to the respective classes, ensuring that the classes are not burdened with unnecessary methods. 
+- **_Dependency Inversions Principle (DIP)_**: - **_Dependency Inversion Principle (DIP)_**: This principle emphasizes the use of abstraction, such as abstract classes and interfaces, over concrete implementations. It suggests that high-level modules should not rely on low-level modules directly; instead, both should depend on abstraction. In the `CarController`, I replaced `private CarServiceImpl carService` with `private CarService carService`. This change ensures that `CarController` depends on the `CarService` abstraction rather than the concrete `CarServiceImpl` implementation.
+
+2. Advantages of Applying SOLID Principles:
+- **_Maintainability_**: By applying the SOLID principles, code becomes more modular and easier to maintain. Each class has a single responsibility, making it simpler to understand, modify, and debug. For example, the `Car` class is responsible only for car-related functionality, and the `Product` class is responsible for product-related functionality.
+- **_Flexibility and Extensibility_**: Following SOLID principles allows for easier extension of functionality without modifying existing code. New features can be added by creating new classes or extending existing ones. For example, if we need to add new mapping related to a new entity, we can simply add a new controller for that entity without modifying the existing controllers.
+- **_Readability and Understandability_**: Code that follows SOLID principles tends to be more readable and understandable. It’s easier to understand the functionality of each class and its purpose. For example, the purpose of the `Car` class is clearly different from the purpose of the `Product` class, making it easier to understand the role of each class in the system.
+
+3. Disadvantages of Not Applying SOLID Principles:
+
+- **Increased Complexity**: Without applying the SOLID principles, classes could become overly complex, handling multiple responsibilities. For example, if the `CarController` class, which extends `ProductController`, were also responsible for managing the mapping for both `Product` and `Car`, it would be harder to understand, modify, and debug.
+- **Reduced Flexibility**: The code could become rigid and difficult to extend. Any new functionality could require modifying existing code, which could introduce bugs and make the code harder to maintain. For example, without applying the SOLID principles, adding a new mapping for a new entity might require modifying existing controller classes.
+- **Tight Coupling**: The classes in the project could become tightly coupled, making it difficult to change one part of the code without affecting others. This would reduce the flexibility and maintainability of the code. For example, without using interfaces, the `@Autowired` annotation creates tight coupling between controllers (`CarController` and `ProductController`) and their corresponding services. 
+

@@ -117,24 +117,8 @@ public class ProductRepositoryTest {
 
         assertNull(updatedProduct);
     }
+    
 
-    @Test
-    void testUpdateExistingProductIdIsNull() {
-        Product product = new Product();
-        product.setProductId(null);
-        product.setProductName("Sampo Cap Bambang");
-        product.setProductQuantity(100);
-        productRepository.create(product);
-
-        Product newProduct = new Product();
-        newProduct.setProductId("existing-id");
-        newProduct.setProductName("Sampo Cap Bambang Baru");
-        newProduct.setProductQuantity(200);
-
-        Product updatedProduct = productRepository.update(newProduct);
-
-        assertNull(updatedProduct);
-    }
     @Test
     void testDeleteProductPositive() {
         Product product = new Product();
