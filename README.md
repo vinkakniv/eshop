@@ -81,6 +81,8 @@ Even though my code works, there are things that could be done to make it better
 2. Indeed, my current use of GitHub Actions for CI/CD workflows effectively meets the definitions of Continuous Integration and Continuous Deployment. With Continuous Integration, every time i make a commit, it triggers a workflow. This workflow automatically builds and tests the code, making sure that any new changes i make work well with the existing code, reducing the chance of problems when combining the changes.
 For Continuous Deployment, as soon as all tests pass, the codebase is automatically sent to the production environment. This means that any new features, updates, or fixes i create are quickly and efficiently delivered to the end-users. This not only speeds up the delivery of new features to users but also cuts down on the time and effort usually needed for manual deployment processes.
 
+------------
+
 # Tutorial 3
 
 1. Here are the SOLID principles that I have applied to this project:
@@ -98,7 +100,7 @@ Additionally, the `ProductRepository` and `CarRepository` classes were previousl
   ```
   with:
   ```
-  car.setCarName(updatedCar.getCarName());
+  productData.set(i, newProduct);
   ```
   This change means that if a new attribute is added to the `Car` object, there's no need to add it to the `update` method.
 - **_Liskov Substitution Principle (LSP)_**: This principle is all about ensuring that a child class can substitute its parent class without causing any unexpected behavior. In this project, as there are no inheritance relationships in the code, the principle has been fulfilled by default.
