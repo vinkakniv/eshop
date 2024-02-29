@@ -51,7 +51,7 @@ class OrderRepositoryTest {
         assertEquals(order.getAuthor(), findResult.getAuthor());
         assertEquals(order.getStatus(), findResult.getStatus());
     }
-
+    
     @Test
     void testSaveUpdate() {
         Order order = orders.get(1);
@@ -65,10 +65,8 @@ class OrderRepositoryTest {
         assertEquals(order.getId(), findResult.getId());
         assertEquals(order.getOrderTime(), findResult.getOrderTime());
         assertEquals(order.getAuthor(), findResult.getAuthor());
-        assertEquals(order.getStatus(), findResult.getStatus());
-        assertEquals(OrderStatus.SUCCESS.getValue(), findResult.getAuthor());
+        assertEquals(OrderStatus.SUCCESS.getValue(), findResult.getStatus());
     }
-
 
     @Test
     void testFindByIdIfIdFound() {
