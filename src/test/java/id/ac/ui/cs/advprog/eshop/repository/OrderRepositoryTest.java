@@ -51,7 +51,7 @@ class OrderRepositoryTest {
         assertEquals(order.getAuthor(), findResult.getAuthor());
         assertEquals(order.getStatus(), findResult.getStatus());
     }
-    
+
     @Test
     void testSaveUpdate() {
         Order order = orders.get(1);

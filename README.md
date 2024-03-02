@@ -8,6 +8,7 @@ This repository contains the code and reflections for Tutorial in Advanced Progr
 - [Tutorial 1](#tutorial-1)
 - [Tutorial 2](#tutorial-2)
 - [Tutorial 3](#tutorial-3)
+- [Tutorial 4](#tutorial-4)
 
 Click here to see the deployed [ADV Shop](https://eshop-adpro-tutorial.koyeb.app/) app!
 
@@ -118,3 +119,13 @@ Additionally, the `ProductRepository` and `CarRepository` classes were previousl
 - **Reduced Flexibility**: The code could become rigid and difficult to extend. Any new functionality could require modifying existing code, which could introduce bugs and make the code harder to maintain. For example, without applying the SOLID principles, adding a new mapping for a new entity might require modifying existing controller classes.
 - **Tight Coupling**: The classes in the project could become tightly coupled, making it difficult to change one part of the code without affecting others. This would reduce the flexibility and maintainability of the code. For example, without using interfaces, the `@Autowired` annotation creates tight coupling between controllers (`CarController` and `ProductController`) and their corresponding services. 
 
+
+------------
+
+# Tutorial 4
+
+### Reflection 1
+
+1. **Test-Driven Development Workflow**: Based on Percival's proposed self-reflective questions, I found the TDD flow to be extremely useful. It helped me to think about the functionality of my code before writing it, which led to more robust and reliable code. However, I found it challenging to write tests for complex functionality. Next time, I plan to break down complex features into smaller, more manageable parts and write tests for these smaller parts.
+
+2. **F.I.R.S.T Principle**: In the tutorial, I created unit tests that mostly followed the F.I.R.S.T principles. My tests were fast, isolated, and repeatable. Each unit test was isolated from the others, so they did not affect each other's results. However, I noticed that my tests were not written in a timely manner. I wrote tests after implementing the code. Next time, I will ensure that I write tests before implementing the code to fully embrace the principles of Test-Driven Development.
