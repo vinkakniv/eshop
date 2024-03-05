@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +34,7 @@ class PaymentTest {
         paymentData = new HashMap<>();
         paymentData.put("key", "value");
 
-        payment = new Payment("1", "method", paymentData, order);
+        payment = new Payment("1", "VOUCHER_CODE", paymentData, order);
 
     }
 
@@ -44,7 +45,7 @@ class PaymentTest {
 
     @Test
     public void testGetMethod() {
-        assertEquals("method", payment.getMethod());
+        assertEquals("VOUCHER_CODE", payment.getMethod().getValue());
     }
 
     @Test
@@ -72,8 +73,22 @@ class PaymentTest {
     @Test
     public void testPaymentWithNullOrder() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new Payment("2", "method2", paymentData, null);
+            new Payment("2", "VOUCHER_CODE", paymentData, null);
         });
+    }
+
+    @Test
+    public void testInvalidPaymentMethod() {
+        paymentData.put("method", "INVALID_METHOD");
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("7", "INVALID_METHOD", paymentData, order);
+        });
+    }
+
+    @Test
+    public void testValidPaymentMethod() {
+        Payment validPayment = new Payment("1", "VOUCHER_CODE", paymentData, order);
+        assertEquals(PaymentMethod.VOUCHER_CODE, validPayment.getMethod());
     }
 
 }
