@@ -80,7 +80,7 @@ public class PaymentServiceImplTest {
         assertEquals("SUCCESS", payment.getOrder().getStatus());
 
     }
-    
+
     @Test
     void testSetStatusInvalid(){
         assertThrows(IllegalArgumentException.class, ()->
