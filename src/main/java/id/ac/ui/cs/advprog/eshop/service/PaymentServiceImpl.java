@@ -1,13 +1,14 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
+import id.ac.ui.cs.advprog.eshop.model.VoucherPayment;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -21,7 +22,12 @@ public class PaymentServiceImpl implements PaymentService {
 
     public Payment addPayment(String method, Map<String, String> paymentData, Order order) {
         UUID uuid = UUID.randomUUID();
-        Payment payment = new Payment(uuid.toString(), method, paymentData, order);
+        Payment payment;
+        if (PaymentMethod.VOUCHER_CODE.name().equals(method)) {
+            payment = new VoucherPayment(uuid.toString(), paymentData, order);
+        } else {
+            payment = new Payment(uuid.toString(), method, paymentData, order);
+        }
         return paymentRepository.save(payment);
     }
 
