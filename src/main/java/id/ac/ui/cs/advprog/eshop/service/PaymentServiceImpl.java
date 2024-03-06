@@ -2,6 +2,7 @@ package id.ac.ui.cs.advprog.eshop.service;
 
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
+import id.ac.ui.cs.advprog.eshop.model.BankTransferPayment;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.VoucherPayment;
@@ -25,6 +26,8 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment;
         if (PaymentMethod.VOUCHER_CODE.name().equals(method)) {
             payment = new VoucherPayment(uuid.toString(), paymentData, order);
+        } else if (PaymentMethod.BANK_TRANSFER.name().equals(method)) {
+            payment = new BankTransferPayment(uuid.toString(), paymentData, order);
         } else {
             payment = new Payment(uuid.toString(), method, paymentData, order);
         }

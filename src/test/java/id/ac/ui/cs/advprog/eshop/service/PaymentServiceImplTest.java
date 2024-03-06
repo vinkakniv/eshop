@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import id.ac.ui.cs.advprog.eshop.model.BankTransferPayment;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Product;
@@ -111,5 +112,20 @@ public class PaymentServiceImplTest {
 
         assertEquals(1, paymentService.getAllPayment().size());
         verify(paymentRepository, times(1)).getAllPayments();
+    }
+
+    @Test
+    public void testAddBankPayment() {
+        BankTransferPayment payment3 = new BankTransferPayment("11112", paymentData, order1);
+        when(paymentRepository.save(any(BankTransferPayment.class))).thenReturn(payment3);
+
+        Payment result = paymentService.addPayment("BANK_TRANSFER", paymentData, order1);
+        result.setId("11112");
+
+        assertEquals(payment3.getId(), result.getId());
+        assertEquals(payment3.getMethod(), result.getMethod());
+        assertEquals(payment3.getPaymentData(), result.getPaymentData());
+        assertEquals(payment3.getOrder(), result.getOrder());
+        verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 }
