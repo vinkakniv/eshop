@@ -4,35 +4,25 @@ import id.ac.ui.cs.advprog.eshop.model.Payment;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PaymentRepository {
-    private List<Payment> payments = new ArrayList<>();
-    public Payment save(Payment payment) {
-        int i = 0;
-        for (Payment savedPayment : payments) {
-            if (savedPayment.getId().equals(payment.getId())) {
-                payments.remove(i);
-                payments.add(i, payment);
-                return payment;
-            }
-            i += 1;
-        }
+    private Map<String, Payment> payments = new HashMap<>();
 
-        payments.add(payment);
+    public Payment save(Payment payment) {
+        payments.put(payment.getId(), payment);
         return payment;
     }
+
     public Payment getPayment(String id) {
-        for (Payment savedPayment : payments) {
-            if (savedPayment.getId().equals(id)) {
-                return savedPayment;
-            }
-        }
-        return null;
+        return payments.get(id);
     }
+
     public List<Payment> getAllPayments() {
-        return payments;
+        return new ArrayList<>(payments.values());
     }
 }
 
