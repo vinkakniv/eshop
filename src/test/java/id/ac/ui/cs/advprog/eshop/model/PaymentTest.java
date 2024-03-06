@@ -92,7 +92,7 @@ class PaymentTest {
     }
 
     @Test
-    public void testValidVoucherPayment() {
+    public void testSuccessVoucherPayment() {
         Map<String, String> paymentData2 = new HashMap<>();
         paymentData2.put("voucherCode", "ESHOP12345678ABC");
         VoucherPayment voucherPay = new VoucherPayment("190", paymentData2, order);
@@ -102,7 +102,7 @@ class PaymentTest {
     }
 
     @Test
-    public void testInvalidVoucherPayment() {
+    public void testRejectedVoucherPayment() {
         Map<String, String> paymentData3 = new HashMap<>();
         paymentData3.put("voucherCode", "INVALID");
         VoucherPayment voucherPay = new VoucherPayment("18888", paymentData3, order);
@@ -138,6 +138,61 @@ class PaymentTest {
         VoucherPayment payment = new VoucherPayment("27", paymentData6, order);
 
         assertEquals("REJECTED", payment.getStatus());
+        assertEquals("FAILED", order.getStatus());
+    }
+
+    @Test
+    public void testSuccessBankTransferPayment() {
+        Map<String, String> paymentData7 = new HashMap<>();
+        paymentData7.put("bankName", "Bank");
+        paymentData7.put("referenceCode", "123456");
+        BankTransferPayment bankPayment = new BankTransferPayment("17771", paymentData7, order);
+
+        assertEquals("SUCCESS", bankPayment.getStatus());
+        assertEquals("SUCCESS", order.getStatus());
+    }
+
+    @Test
+    public void testEmptyBankName() {
+        Map<String, String> paymentData8 = new HashMap<>();
+        paymentData8.put("bankName", "");
+        paymentData8.put("referenceCode", "pacilstress");
+        BankTransferPayment bankPayment = new BankTransferPayment("111", paymentData8, order);
+
+        assertEquals("REJECTED", bankPayment.getStatus());
+        assertEquals("FAILED", order.getStatus());
+    }
+
+    @Test
+    public void testNullBankName() {
+        Map<String, String> paymentData9 = new HashMap<>();
+        paymentData9.put("bankName", null);
+        paymentData9.put("referenceCode", "pacilstre55");
+        BankTransferPayment bankPayment = new BankTransferPayment("111", paymentData9, order);
+
+        assertEquals("REJECTED", bankPayment.getStatus());
+        assertEquals("FAILED", order.getStatus());
+    }
+
+    @Test
+    public void testEmptyRefCode() {
+        Map<String, String> paymentData10 = new HashMap<>();
+        paymentData10.put("bankName", "BCA");
+        paymentData10.put("referenceCode", "");
+        BankTransferPayment bankPayment = new BankTransferPayment("111", paymentData10, order);
+
+        assertEquals("REJECTED", bankPayment.getStatus());
+        assertEquals("FAILED", order.getStatus());
+    }
+
+    @Test
+    public void testNullRefCode() {
+        Map<String, String> paymentData11 = new HashMap<>();
+        paymentData11.put("bankName", "BCA");
+        paymentData11.put("referenceCode", null);
+        BankTransferPayment bankPayment = new BankTransferPayment("111", paymentData11, order);
+
+        assertEquals("REJECTED", bankPayment.getStatus());
         assertEquals("FAILED", order.getStatus());
     }
 
